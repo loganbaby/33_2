@@ -2,10 +2,17 @@
 #include <vector>
 #include <ctime>
 
-class catchWrongThing : public std::exception {
+class catchWrongBoot : public std::exception {
  public:
   const char* what() const noexcept override { 
-    return "Caught wrong thing!";
+    return "Exception: Wrong boot";
+  }
+};
+
+class catchWrongIndex : public std::exception {
+ public:
+  const char* what() const noexcept override {
+    return "Exception: Wrong random index";
   }
 };
 
@@ -28,14 +35,14 @@ class Fishing {
     for (int i = 0; i < 3; i++) {
       int randomIndex = std::rand() % pitch.size();
       for (int i = 0; i < 3; i++) {
-        if (buffer[i] == randomIndex) throw std::exception();
-      }
+        if (buffer[i] == randomIndex) throw catchWrongIndex();
 
-      try {
-        pitch[randomIndex] = false;
-        buffer[i] = randomIndex;
-      } catch (const std::exception& x) {
-        std::cerr << "Wrong index!";
+        try {
+          pitch[randomIndex] = false;
+          buffer[i] = randomIndex;
+        } catch (const std::exception& x) {
+          std::cerr << x.what();
+        }
       }
     }
   }
@@ -44,11 +51,11 @@ class Fishing {
     std::cout << "Enter the number(0-9): ";
     std::cin >> choice;
 
-    if (pitch[choice] == false) throw catchWrongThing();
+    if (pitch[choice] == false) throw catchWrongBoot();
 
     try {
       std::cout << "You win!" << std::endl;
-    } catch (const catchWrongThing& x) {
+    } catch (const catchWrongBoot& x) {
       std::cout << "Exception: " << x.what() << std::endl;
     }
   }
