@@ -5,14 +5,14 @@
 class catchWrongBoot : public std::exception {
  public:
   const char* what() const noexcept override { 
-    return "Exception: Wrong boot";
+    return "Exception: Wrong boot\n";
   }
 };
 
 class catchWrongIndex : public std::exception {
  public:
   const char* what() const noexcept override {
-    return "Exception: Wrong random index";
+    return "Exception: Wrong random index\n";
   }
 };
 
@@ -35,9 +35,8 @@ class Fishing {
     for (int i = 0; i < 3; i++) {
       int randomIndex = std::rand() % pitch.size();
       for (int i = 0; i < 3; i++) {
-        if (buffer[i] == randomIndex) throw catchWrongIndex();
-
         try {
+          if (buffer[i] == randomIndex) throw catchWrongIndex();
           pitch[randomIndex] = false;
           buffer[i] = randomIndex;
         } catch (const std::exception& x) {
@@ -50,10 +49,8 @@ class Fishing {
   inline void setFish() {
     std::cout << "Enter the number(0-9): ";
     std::cin >> choice;
-
-    if (pitch[choice] == false) throw catchWrongBoot();
-
     try {
+      if (pitch[choice] == false) throw catchWrongBoot();
       std::cout << "You win!" << std::endl;
     } catch (const catchWrongBoot& x) {
       std::cout << "Exception: " << x.what() << std::endl;
