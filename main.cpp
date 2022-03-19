@@ -39,7 +39,7 @@ class Fishing {
           if (buffer[i] == randomIndex) throw catchWrongIndex();
           pitch[randomIndex] = false;
           buffer[i] = randomIndex;
-        } catch (const std::exception& x) {
+        } catch (const catchWrongIndex& x) {
           std::cerr << x.what();
         }
       }
@@ -47,14 +47,20 @@ class Fishing {
   }
 
   inline void setFish() {
-    std::cout << "Enter the number(0-9): ";
-    std::cin >> choice;
-    try {
-      if (pitch[choice] == false) throw catchWrongBoot();
-      std::cout << "You win!" << std::endl;
-    } catch (const catchWrongBoot& x) {
-      std::cout << "Exception: " << x.what() << std::endl;
-    }
+    int counter = 0;
+    do {
+      std::cout << "Enter the number(0-9): ";
+      std::cin >> choice;
+
+      try {
+        if (pitch[choice] == false) throw catchWrongBoot();
+        std::cout << "You win!" << std::endl;
+      } catch (const catchWrongBoot& x) {
+        std::cout << "Exception: " << x.what() << std::endl;
+        counter++;
+        std::cout << "Count of attemps: " << counter << std::endl;
+      }
+    } while (pitch[choice] == false);
   }
 };
 
